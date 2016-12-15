@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="locky2.DogFoodPage">
+	<AbsoluteLayout>
+		<Image x:Name="background" 
+			Aspect="AspectFill" 
+			AbsoluteLayout.LayoutBounds="0,0,1,1"
+			AbsoluteLayout.LayoutFlags="All"/>
+		
+		<Picker x:Name="dogSizesPicker" 
+			AbsoluteLayout.LayoutBounds="0,.1,.5,.1" AbsoluteLayout.LayoutFlags = "All" 
+			Title="Dog Size" 
+			BackgroundColor="Lime" 
+			SelectedIndexChanged="DogSizeSelectedIndexChanged">
+		</Picker>
+
+		<Picker x:Name="dogFoodsPicker" 
+			AbsoluteLayout.LayoutBounds=".75,.1,.5,.1" AbsoluteLayout.LayoutFlags = "All" 
+			Title="Dog Foods" 
+			BackgroundColor="Blue" 
+			SelectedIndexChanged="DogFoodSelectedIndexChanged">
+		</Picker>
+
+		<Button Clicked="Display" Text="How Much do I Feed?" 
+			BackgroundColor="Aqua"
+			TextColor="Black"
+			AbsoluteLayout.LayoutBounds="0,.25,.5,.1" AbsoluteLayout.LayoutFlags = "All" />
+
+		<Label x:Name="howMuchToFeed"
+			TextColor="Black"
+			BackgroundColor="Yellow"
+			AbsoluteLayout.LayoutBounds=".5,.5,.5,.1" AbsoluteLayout.LayoutFlags = "All" />
+
+	</AbsoluteLayout>
+</ContentPage>
