@@ -9,6 +9,7 @@ using System.Diagnostics;
 
 namespace locky2
 {
+
 	public partial class DogFoodPage : ContentPage
 	{
 
@@ -16,6 +17,7 @@ namespace locky2
 		private MobileServiceClient client;
 		private IMobileServiceTable<DogFood> dogFoodTable;
 
+		private List<DogFood> _dogFoodsFromDb;
 		private List<string> _dogSizes;
 
 		public DogFoodPage()
@@ -34,40 +36,58 @@ namespace locky2
 			foreach (string dogSize in _dogSizes)
 				dogSizesPicker.Items.Add(dogSize);
 
-			//AddFoodsToDb();
+			AddNewFoodsToDb();
 
-			AddFoodsToPicker();
+			AddFoodsToListView();
 		}
 
-		public async Task<List<DogFood>> GetDogFoodAsync() //<ObservableCollection<Nuts>> GetNutsAsync()
+		public async Task<List<DogFood>> GetDogFoodAsync()
 		{
 			List<DogFood> dogFoods = await dogFoodTable
 				.OrderBy<string>(dogFood => dogFood.Brand)
 				.ToListAsync();
 
-			return dogFoods;//new ObservableCollection<Nuts>(items);	
+			return dogFoods;
 		}
 
-		public async void AddFoodsToDb()
-		{ 
+		public async void AddNewFoodsToDb()
+		{
 			//await dogFoodTable.InsertAsync(new DogFood { Brand="Taste Of The Wild"});
 			//await dogFoodTable.InsertAsync(new DogFood { Brand = "Nature's Variety"});
 			//await dogFoodTable.InsertAsync(new DogFood { Brand = "Natural Balance"});
 			//await dogFoodTable.InsertAsync(new DogFood { Brand = "Organix"});
 			//await dogFoodTable.InsertAsync(new DogFood { Brand = "Hill's Science Diet"});
 
-			//await dogFoodTable.InsertAsync(new DogFood { Brand = "Hill's Science Diet", Type = "Soft" });
+			//await dogFoodTable.InsertAsync(new DogFood { Brand = "Hill's Science Diet", Type = "Some Food Name" });
 		}
 
-		public async void AddFoodsToPicker()
-		{ 
+		public async void AddFoodsToListView()
+		{
 			//populate dog foods
-			var dogFoodsList = await GetDogFoodAsync();
-			foreach (var dogFood in dogFoodsList)
-			{
-				dogFoodsPicker.Items.Add(dogFood.Brand);
+			_dogFoodsFromDb = await GetDogFoodAsync();
 
+			var dogFoodGroups = new List<FoodGroup>();
+			foreach (var alphabetLetter in Constants.alphabetLetters)
+			{
+				var dogFoodGroup = new FoodGroup(alphabetLetter);
+
+				foreach (var food in GetFoodSubList(alphabetLetter))
+					dogFoodGroup.Add(food);
+
+				dogFoodGroups.Add(dogFoodGroup);
 			}
+
+			dogFoodsListView.ItemsSource = dogFoodGroups;
+			dogFoodsListView.IsGroupingEnabled = true;
+			dogFoodsListView.GroupDisplayBinding = new Binding("Title");
+			dogFoodsListView.GroupShortNameBinding = new Binding("Title");
+		}
+
+		//return the sub list of dog foods whose brand begins with groupTitle
+		private List<DogFood> GetFoodSubList(string groupTitle)
+		{
+			var foodSubList = _dogFoodsFromDb.FindAll(dogfood => dogfood.Brand.Substring(0, groupTitle.Length) == groupTitle);
+			return foodSubList;
 		}
 
 		public async void Display(object sender, EventArgs e)
@@ -77,20 +97,28 @@ namespace locky2
 			//await GetNutAsync();
 		}
 
+		void ChooseFoodButtonClicked(object sender, System.EventArgs e)
+		{
+			dogFoodsListView.IsVisible = !dogFoodsListView.IsVisible;
+		}
+
+		void FoodSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+		{
+			dogFoodsListView.IsVisible = false;
+			var food = e.SelectedItem as DogFood;
+			chooseFoodButton.Text = food.Brand + " " + food.Type;
+		}
+
 		void DogSizeSelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			var dogSize = dogSizesPicker.Items[dogSizesPicker.SelectedIndex];
 			//DisplayAlert("Dog Size", dogSize, "OK");
 		}
 
-		void DogFoodSelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			var dogFood = dogFoodsPicker.Items[dogFoodsPicker.SelectedIndex];
-		}
-
 		private List<string> GetDogSizes()
 		{
-			return new List<string> { "<10 lb", "10-20 lb", "20-30 lb","30-40 lb","40-50 lb","50+ lb"};
+			return new List<string> { "<10 lb", "10-20 lb", "20-30 lb", "30-40 lb", "40-50 lb", "50+ lb" };
 		}
 	}
 }
+

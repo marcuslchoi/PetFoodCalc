@@ -23,7 +23,10 @@ namespace locky2 {
         private global::Xamarin.Forms.Picker dogSizesPicker;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::Xamarin.Forms.Picker dogFoodsPicker;
+        private global::Xamarin.Forms.Button chooseFoodButton;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.ListView dogFoodsListView;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Label howMuchToFeed;
@@ -33,7 +36,8 @@ namespace locky2 {
             this.LoadFromXaml(typeof(DogFoodPage));
             background = this.FindByName <global::Xamarin.Forms.Image>("background");
             dogSizesPicker = this.FindByName <global::Xamarin.Forms.Picker>("dogSizesPicker");
-            dogFoodsPicker = this.FindByName <global::Xamarin.Forms.Picker>("dogFoodsPicker");
+            chooseFoodButton = this.FindByName <global::Xamarin.Forms.Button>("chooseFoodButton");
+            dogFoodsListView = this.FindByName <global::Xamarin.Forms.ListView>("dogFoodsListView");
             howMuchToFeed = this.FindByName <global::Xamarin.Forms.Label>("howMuchToFeed");
         }
     }
