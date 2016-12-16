@@ -1,26 +1,46 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="locky2.DogFoodPage">
-	<AbsoluteLayout>
+	<AbsoluteLayout BackgroundColor="Black">
 
 		<ActivityIndicator IsRunning="{Binding Source={x:Reference dogFoodsListView},Path=IsLoading}"
 			Color="White"
 			AbsoluteLayout.LayoutBounds="0.5,0.5,100,100" 
 			AbsoluteLayout.LayoutFlags="PositionProportional" />
 		
-		<Image x:Name="background" 
-			Aspect="AspectFill" 
+		<Image x:Name="background" 			
 			AbsoluteLayout.LayoutBounds="0,0,1,1"
 			AbsoluteLayout.LayoutFlags="All"/>
-		
-		<Picker x:Name="dogSizesPicker" 
+
+		<Picker x:Name="animalPicker"
 			AbsoluteLayout.LayoutBounds="0,.1,.5,.1" AbsoluteLayout.LayoutFlags = "All" 
+			Title="Species" 
+			BackgroundColor="Lime" 
+			SelectedIndexChanged="AnimalSelectedIndexChanged">
+		</Picker>
+
+		<Picker x:Name="agePicker"
+			AbsoluteLayout.LayoutBounds="0,.2,.5,.1" AbsoluteLayout.LayoutFlags = "All" 
+			Title="Age" 
+			BackgroundColor="Lime" 
+			SelectedIndexChanged="AgeSelectedIndexChanged">
+		</Picker>
+
+		<Picker x:Name="activityLevelPicker"
+			AbsoluteLayout.LayoutBounds="0,.3,.5,.1" AbsoluteLayout.LayoutFlags = "All" 
+			Title="Activity Level" 
+			BackgroundColor="Lime" 
+			SelectedIndexChanged="ActivityLevelSelectedIndexChanged">
+		</Picker>
+				
+		<Picker x:Name="dogSizesPicker" 
+			AbsoluteLayout.LayoutBounds="0,.4,.5,.1" AbsoluteLayout.LayoutFlags = "All" 
 			Title="Dog Size" 
 			BackgroundColor="Lime" 
 			SelectedIndexChanged="DogSizeSelectedIndexChanged">
 		</Picker>
 
 		<Button x:Name="chooseFoodButton"
-			AbsoluteLayout.LayoutBounds=".75,.1,.5,.1" AbsoluteLayout.LayoutFlags = "All" 
+			AbsoluteLayout.LayoutBounds="1,.1,.5,.1" AbsoluteLayout.LayoutFlags = "All" 
 			Text="Choose Food"
 			TextColor="Black"
 			BackgroundColor="Yellow"
@@ -38,19 +58,18 @@
 					<TextCell Text="{Binding Brand}" Detail="{Binding Type}" DetailColor="Blue"/>				
 				</DataTemplate>
 
-			</ListView.ItemTemplate>
-				
+			</ListView.ItemTemplate>		
 		</ListView>
 
 		<Button Clicked="Display" Text="How Much do I Feed?" 
 			BackgroundColor="Aqua"
 			TextColor="Black"
-			AbsoluteLayout.LayoutBounds="0,.25,.5,.1" AbsoluteLayout.LayoutFlags = "All" />
+			AbsoluteLayout.LayoutBounds="0,.9,.5,.1" AbsoluteLayout.LayoutFlags = "All" />
 
 		<Label x:Name="howMuchToFeed"
 			TextColor="Black"
 			BackgroundColor="Yellow"
-			AbsoluteLayout.LayoutBounds=".5,.5,.5,.1" AbsoluteLayout.LayoutFlags = "All" />
+			AbsoluteLayout.LayoutBounds="1,.9,.5,.1" AbsoluteLayout.LayoutFlags = "All" />
 
 	</AbsoluteLayout>
 </ContentPage>

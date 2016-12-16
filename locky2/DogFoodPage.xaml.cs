@@ -19,18 +19,29 @@ namespace locky2
 
 		private List<DogFood> _dogFoodsFromDb;
 		private List<string> _dogSizes;
+		private List<string> _animalTypes;
+		private string _animal;
+		private List<string> _activityLevels;
 
 		public DogFoodPage()
 		{
 			InitializeComponent();
 
 			_dogSizes = GetDogSizes();
+			_animalTypes = GetAnimals();
+			_activityLevels = GetActivityLevels();
 
 			manager = TodoItemManager.DefaultManager;
 			client = manager.CurrentClient;
 			dogFoodTable = client.GetTable<DogFood>();
 
 			background.Source = ImageSource.FromResource("locky2.Images.FatDog1.jpeg");
+
+			foreach (string animal in _animalTypes)
+				animalPicker.Items.Add(animal);
+
+			foreach (string activityLevel in _activityLevels)
+				activityLevelPicker.Items.Add(activityLevel);
 
 			//populate dog sizes
 			foreach (string dogSize in _dogSizes)
@@ -97,6 +108,28 @@ namespace locky2
 			//await GetNutAsync();
 		}
 
+		void AnimalSelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			_animal = animalPicker.Items[animalPicker.SelectedIndex];
+
+			//TODO: fix crash when age already chosen and animal changed
+			agePicker.Items.Clear();
+			foreach (var age in GetAges())
+				agePicker.Items.Add(age);
+		}
+
+		void AgeSelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			
+			var age = agePicker.Items[agePicker.SelectedIndex];
+		}
+
+		void ActivityLevelSelectedIndexChanged(object sender, System.EventArgs e)
+		{
+
+			var activityLevel = activityLevelPicker.Items[activityLevelPicker.SelectedIndex];
+		}
+
 		void ChooseFoodButtonClicked(object sender, System.EventArgs e)
 		{
 			dogFoodsListView.IsVisible = !dogFoodsListView.IsVisible;
@@ -118,6 +151,27 @@ namespace locky2
 		private List<string> GetDogSizes()
 		{
 			return new List<string> { "<10 lb", "10-20 lb", "20-30 lb", "30-40 lb", "40-50 lb", "50+ lb" };
+		}
+
+		private List<string> GetAnimals()
+		{
+			return new List<string> { "Dog","Cat" };
+		}
+
+		private List<string> GetAges()
+		{
+			string infant="";
+			if (_animal == "Dog")
+				infant = "Puppy";
+			else if (_animal == "Cat")
+				infant = "Kitten";
+			
+			return new List<string> { infant,"Adult","Senior" };
+		}
+
+		private List<string> GetActivityLevels()
+		{
+			return new List<string> { "Sedentary","Normal","Active" };
 		}
 	}
 }

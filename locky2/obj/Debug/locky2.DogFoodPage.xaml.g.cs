@@ -20,6 +20,15 @@ namespace locky2 {
         private global::Xamarin.Forms.Image background;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Picker animalPicker;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Picker agePicker;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Picker activityLevelPicker;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Picker dogSizesPicker;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
@@ -35,6 +44,9 @@ namespace locky2 {
         private void InitializeComponent() {
             this.LoadFromXaml(typeof(DogFoodPage));
             background = this.FindByName <global::Xamarin.Forms.Image>("background");
+            animalPicker = this.FindByName <global::Xamarin.Forms.Picker>("animalPicker");
+            agePicker = this.FindByName <global::Xamarin.Forms.Picker>("agePicker");
+            activityLevelPicker = this.FindByName <global::Xamarin.Forms.Picker>("activityLevelPicker");
             dogSizesPicker = this.FindByName <global::Xamarin.Forms.Picker>("dogSizesPicker");
             chooseFoodButton = this.FindByName <global::Xamarin.Forms.Button>("chooseFoodButton");
             dogFoodsListView = this.FindByName <global::Xamarin.Forms.ListView>("dogFoodsListView");
