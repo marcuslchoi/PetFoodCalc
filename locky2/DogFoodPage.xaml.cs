@@ -22,6 +22,7 @@ namespace locky2
 		private List<string> _animalTypes;
 		private string _animal;
 		private List<string> _activityLevels;
+		private List<string> _weightUnits;
 
 		public DogFoodPage()
 		{
@@ -30,6 +31,7 @@ namespace locky2
 			_dogSizes = GetDogSizes();
 			_animalTypes = GetAnimals();
 			_activityLevels = GetActivityLevels();
+			_weightUnits = GetWeightUnits();
 
 			manager = TodoItemManager.DefaultManager;
 			client = manager.CurrentClient;
@@ -47,6 +49,10 @@ namespace locky2
 			foreach (string dogSize in _dogSizes)
 				dogSizesPicker.Items.Add(dogSize);
 
+			foreach (string weightUnit in _weightUnits)
+				weightUnitPicker.Items.Add(weightUnit);
+
+			weightUnitPicker.SelectedIndex = 0;
 			AddNewFoodsToDb();
 
 			AddFoodsToListView();
@@ -130,6 +136,12 @@ namespace locky2
 			var activityLevel = activityLevelPicker.Items[activityLevelPicker.SelectedIndex];
 		}
 
+		void WeightUnitSelectedIndexChanged(object sender, System.EventArgs e)
+		{
+
+			var weightUnit = weightUnitPicker.Items[weightUnitPicker.SelectedIndex];
+		}
+
 		void ChooseFoodButtonClicked(object sender, System.EventArgs e)
 		{
 			dogFoodsListView.IsVisible = !dogFoodsListView.IsVisible;
@@ -172,6 +184,11 @@ namespace locky2
 		private List<string> GetActivityLevels()
 		{
 			return new List<string> { "Sedentary","Normal","Active" };
+		}
+
+		private List<string> GetWeightUnits()
+		{
+			return new List<string> { "lb","kg" };
 		}
 	}
 }

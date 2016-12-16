@@ -31,9 +31,19 @@
 			BackgroundColor="Lime" 
 			SelectedIndexChanged="ActivityLevelSelectedIndexChanged">
 		</Picker>
-				
+
+		<Entry Placeholder="Enter Weight"
+			AbsoluteLayout.LayoutBounds="0,.4,.5,.1" AbsoluteLayout.LayoutFlags = "All" />
+
+		<Picker x:Name="weightUnitPicker" 
+			AbsoluteLayout.LayoutBounds=".75,.4,.25,.1" AbsoluteLayout.LayoutFlags = "All" 
+			BackgroundColor="Lime" 
+			SelectedIndexChanged="WeightUnitSelectedIndexChanged">
+		</Picker>
+		
 		<Picker x:Name="dogSizesPicker" 
 			AbsoluteLayout.LayoutBounds="0,.4,.5,.1" AbsoluteLayout.LayoutFlags = "All" 
+			IsVisible="false"
 			Title="Dog Size" 
 			BackgroundColor="Lime" 
 			SelectedIndexChanged="DogSizeSelectedIndexChanged">
