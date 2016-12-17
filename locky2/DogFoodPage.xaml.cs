@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using System.Linq;
 using Microsoft.WindowsAzure.MobileServices;
 using System.Diagnostics;
+using SQLite;
 
 namespace locky2
 {
@@ -16,19 +17,29 @@ namespace locky2
 		private TodoItemManager manager;
 		private MobileServiceClient client;
 		private IMobileServiceTable<DogFood> dogFoodTable;
-
 		private List<DogFood> _dogFoodsFromDb;
-		private List<string> _dogSizes;
+
 		private List<string> _animalTypes;
-		private string _animal;
 		private List<string> _activityLevels;
 		private List<string> _weightUnits;
+
+		private string _species;
+		private DogFood _food;
+		private string _age;
+		private string _activityLevel;
+		private float _weight;
+		private string _weightUnit;
+
+		private SQLiteAsyncConnection _connection;
 
 		public DogFoodPage()
 		{
 			InitializeComponent();
 
-			_dogSizes = GetDogSizes();
+			//this is the gateway to the database (has crud operations)
+			_connection = DependencyService.Get<ISQLiteDb>().GetConnection();
+
+
 			_animalTypes = GetAnimals();
 			_activityLevels = GetActivityLevels();
 			_weightUnits = GetWeightUnits();
@@ -45,10 +56,6 @@ namespace locky2
 			foreach (string activityLevel in _activityLevels)
 				activityLevelPicker.Items.Add(activityLevel);
 
-			//populate dog sizes
-			foreach (string dogSize in _dogSizes)
-				dogSizesPicker.Items.Add(dogSize);
-
 			foreach (string weightUnit in _weightUnits)
 				weightUnitPicker.Items.Add(weightUnit);
 
@@ -58,12 +65,22 @@ namespace locky2
 			AddFoodsToListView();
 		}
 
+		protected override async void OnAppearing()
+		{
+			await _connection.CreateTableAsync<Animal>();
+
+			var animals = await _connection.Table<Animal>().ToListAsync();
+			//animalslistview.itemsource = animals;
+
+			base.OnAppearing();
+		}
+
 		public async Task<List<DogFood>> GetDogFoodAsync()
 		{
 			List<DogFood> dogFoods = await dogFoodTable
 				.OrderBy<string>(dogFood => dogFood.Brand)
 				.ToListAsync();
-
+			
 			return dogFoods;
 		}
 
@@ -107,16 +124,35 @@ namespace locky2
 			return foodSubList;
 		}
 
-		public async void Display(object sender, EventArgs e)
+		public void DisplayFoodAmount(object sender, EventArgs e)
 		{
-			howMuchToFeed.Text = "10 oz every meal";
-			//ObservableCollection<Nuts> nutsCollection;
-			//await GetNutAsync();
+			float cups = 1.5f;
+			//howMuchToFeed.Text = "10 oz every meal";
+			DisplayAlert("Food!",
+						 "Your " + _species.ToLower() + " needs " + cups + " cups of food per meal. Save info?",
+						 "Yes","No");
+
+			SaveAnimalToSqlLite("some name");
+		}
+
+		private async void SaveAnimalToSqlLite(string name)
+		{
+			var pet = new Animal
+			{
+				DateSaved = DateTime.Now,
+				Name = name,
+				Species = _species,
+				Age = _age,
+				ActivityLevel = _activityLevel,
+				Weight = _weight,
+				FoodName = _food.Brand+" "+_food.Type
+			};
+			await _connection.InsertAsync(pet);
 		}
 
 		void AnimalSelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			_animal = animalPicker.Items[animalPicker.SelectedIndex];
+			_species = animalPicker.Items[animalPicker.SelectedIndex];
 
 			//TODO: fix crash when age already chosen and animal changed
 			agePicker.Items.Clear();
@@ -127,19 +163,29 @@ namespace locky2
 		void AgeSelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			
-			var age = agePicker.Items[agePicker.SelectedIndex];
+			_age = agePicker.Items[agePicker.SelectedIndex];
 		}
 
 		void ActivityLevelSelectedIndexChanged(object sender, System.EventArgs e)
 		{
 
-			var activityLevel = activityLevelPicker.Items[activityLevelPicker.SelectedIndex];
+			_activityLevel = activityLevelPicker.Items[activityLevelPicker.SelectedIndex];
+		}
+
+		void WeightEntryCompleted(object sender, System.EventArgs e)
+		{
+			float weightEntered = float.Parse(weightEntry.Text);
+			if (_weightUnit == "lb")
+				_weight = weightEntered / Constants.lbsPerKg;
+			else
+				_weight = weightEntered;
+			
 		}
 
 		void WeightUnitSelectedIndexChanged(object sender, System.EventArgs e)
 		{
 
-			var weightUnit = weightUnitPicker.Items[weightUnitPicker.SelectedIndex];
+			_weightUnit = weightUnitPicker.Items[weightUnitPicker.SelectedIndex];
 		}
 
 		void ChooseFoodButtonClicked(object sender, System.EventArgs e)
@@ -150,19 +196,8 @@ namespace locky2
 		void FoodSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
 		{
 			dogFoodsListView.IsVisible = false;
-			var food = e.SelectedItem as DogFood;
-			chooseFoodButton.Text = food.Brand + " " + food.Type;
-		}
-
-		void DogSizeSelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			var dogSize = dogSizesPicker.Items[dogSizesPicker.SelectedIndex];
-			//DisplayAlert("Dog Size", dogSize, "OK");
-		}
-
-		private List<string> GetDogSizes()
-		{
-			return new List<string> { "<10 lb", "10-20 lb", "20-30 lb", "30-40 lb", "40-50 lb", "50+ lb" };
+			_food = e.SelectedItem as DogFood;
+			chooseFoodButton.Text = _food.Brand + " " + _food.Type;
 		}
 
 		private List<string> GetAnimals()
@@ -173,9 +208,9 @@ namespace locky2
 		private List<string> GetAges()
 		{
 			string infant="";
-			if (_animal == "Dog")
+			if (_species == "Dog")
 				infant = "Puppy";
-			else if (_animal == "Cat")
+			else if (_species == "Cat")
 				infant = "Kitten";
 			
 			return new List<string> { infant,"Adult","Senior" };

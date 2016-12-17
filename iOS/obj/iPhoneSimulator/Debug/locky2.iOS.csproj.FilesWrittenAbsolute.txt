@@ -73,3 +73,5 @@
 /Users/marcuschoi/repos/PetFoodCalc/iOS/bin/iPhoneSimulator/Debug/Microsoft.WindowsAzure.Mobile.SQLiteStore.dll
 /Users/marcuschoi/repos/PetFoodCalc/iOS/bin/iPhoneSimulator/Debug/locky2.dll
 /Users/marcuschoi/repos/PetFoodCalc/iOS/bin/iPhoneSimulator/Debug/locky2.dll.mdb
+/Users/marcuschoi/repos/PetFoodCalc/iOS/bin/iPhoneSimulator/Debug/SQLitePCLRaw.batteries_v2.dll
+/Users/marcuschoi/repos/PetFoodCalc/iOS/bin/iPhoneSimulator/Debug/SQLite-net.dll

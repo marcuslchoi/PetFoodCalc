@@ -1,9 +1,11 @@
 ﻿<Properties StartupConfiguration="{5FA0219F-B063-4D07-800B-CC38BDB5B916}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="iOS/Main.cs">
     <Files>
-      <File FileName="locky2/DogFoodPage.xaml.cs" Line="44" Column="50" />
-      <File FileName="locky2/DogFoodPage.xaml" Line="32" Column="47" />
-      <File FileName="iOS/Main.cs" Line="17" Column="48" />
+      <File FileName="locky2/DogFoodPage.xaml" Line="68" Column="3" />
+      <File FileName="locky2/DogFoodPage.xaml.cs" Line="135" Column="37" />
+      <File FileName="locky2/Model/Animal.cs" Line="12" Column="19" />
+      <File FileName="../../Downloads/Using SQLite - Resources/MainPage.xaml.cs" Line="7" Column="3" />
+      <File FileName="iOS/Main.cs" Line="17" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
